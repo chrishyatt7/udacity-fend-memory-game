@@ -44,7 +44,7 @@ function displayCard(card) {
 }
 // Add card to open card list
 function openCard(card) {
-  openCardList.push(card.innerHTML);
+  openCardList.push(card);
 }
 // Card match function --> toggle 'match,' 'open', 'show' classes
 function cardMatchTrue() {

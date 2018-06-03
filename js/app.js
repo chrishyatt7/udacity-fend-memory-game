@@ -12,7 +12,7 @@ const deckFrag = document.createDocumentFragment();
 // Loop through each card and create its HTML
 for (card in cardList) {
 	const newCard = document.createElement('li');
-	newCard.className = 'card match ' + card;
+	newCard.classList.add('card', card);
 	newCard.innerHTML = '<i class="fa ' + cardList[card] + '"></i>';
 
 	deckFrag.appendChild(newCard);
@@ -40,7 +40,7 @@ function shuffle(array) {
 
 // Display card symbol function --> toggle 'open' class and 'show' class
 function displayCard(card) {
-  card.className += ' open show';
+  card.classList.add('open', 'show');
 }
 // Add card to open card list
 function openCard(card) {

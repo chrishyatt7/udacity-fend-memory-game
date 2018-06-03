@@ -1,6 +1,8 @@
 // Create a list that holds all of your cards
 let cardList = ['fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-diamond', 'fa-diamond', 'fa-bomb', 'fa-bomb', 'fa-bolt', 'fa-bolt', 'fa-bicycle', 'fa-bicycle'];
 
+let openCardList = [];
+
 // Display the cards on the page
 // Shuffle the list of cards
 cardList = shuffle(cardList);
@@ -41,8 +43,8 @@ function displayCard(card) {
   card.className += ' open show';
 }
 // Add card to open card list
-function openCard() {
-
+function openCard(card) {
+  openCardList.push(card.innerHTML);
 }
 // Card match function --> toggle 'match,' 'open', 'show' classes
 function cardMatchTrue() {
@@ -66,7 +68,7 @@ cardDeck.addEventListener('click', function(evt) {
   // Display the card's symbol
   displayCard(evt.target);
   // Add the card to a *list* of "open" cards
-  openCard();
+  openCard(evt.target);
   // If the list already has another card, check to see if the two cards match
   // if () {
     // If the cards do match, lock the cards in the open position

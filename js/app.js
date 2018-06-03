@@ -37,8 +37,8 @@ function shuffle(array) {
 }
 
 // Display card symbol function --> toggle 'open' class and 'show' class
-function displayCard() {
-
+function displayCard(card) {
+  card.className += ' open show';
 }
 // Add card to open card list
 function openCard() {
@@ -64,17 +64,17 @@ function finalScore() {
 // Add event listener for each card
 cardDeck.addEventListener('click', function(evt) {
   // Display the card's symbol
-  displayCard();
+  displayCard(evt.target);
   // Add the card to a *list* of "open" cards
   openCard();
   // If the list already has another card, check to see if the two cards match
-  if () {
+  // if () {
     // If the cards do match, lock the cards in the open position
     cardMatchTrue();
-  } else {
+  // } else {
     // If the cards do not match, remove the cards from the list and hide the card's symbol
     cardMatchFalse();
-  }
+  // }
   // Increment the move counter and display it on the page
   updateMoveCounter();
   // If all cards have matched, display a message with the final score

@@ -1,23 +1,25 @@
-/*
- * Create a list that holds all of your cards
- */
+// Create a list that holds all of your cards
 let cardList = ['fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-diamond', 'fa-diamond', 'fa-bomb', 'fa-bomb', 'fa-bolt', 'fa-bolt', 'fa-bicycle', 'fa-bicycle'];
 
-/*
- * Example of html card
- * <li class="card">
- *   <i class="fa"></i>
- * </li>
- */
+// Display the cards on the page
+// Shuffle the list of cards
+cardList = shuffle(cardList);
 
+// Create deck fragment
+const deckFrag = document.createDocumentFragment();
+// Loop through each card and create its HTML
+for (card in cardList) {
+	const newCard = document.createElement('li');
+	newCard.className = 'card match';
+	newCard.innerHTML = '<i class="fa ' + cardList[card] + '"></i>';
 
+	deckFrag.appendChild(newCard);
+}
+// Select deck
+const cardDeck = document.querySelector('.deck');
+// Add cards to DOM
+cardDeck.appendChild(deckFrag);
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {

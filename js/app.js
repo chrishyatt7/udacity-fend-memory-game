@@ -12,7 +12,7 @@ const deckFrag = document.createDocumentFragment();
 // Loop through each card and create its HTML
 for (card in cardList) {
 	const newCard = document.createElement('li');
-	newCard.className = 'card';
+	newCard.className = 'card match ' + card;
 	newCard.innerHTML = '<i class="fa ' + cardList[card] + '"></i>';
 
 	deckFrag.appendChild(newCard);

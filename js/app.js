@@ -47,12 +47,19 @@ function openCard(card) {
   openCardList.push(card);
 }
 // Card match function --> toggle 'match,' 'open', 'show' classes
-function cardMatchTrue() {
-
+function cardMatchTrue(cardList) {
+  for (card in cardList) {
+    cardList[card].classList.add('match');
+    cardList[card].classList.remove('open', 'show');
+  }
+  cardList.length = 0;
 }
 // Non-match function
-function cardMatchFalse() {
-
+function cardMatchFalse(cardList) {
+  for (card in cardList) {
+    cardList[card].classList.remove('open', 'show');
+  }
+  cardList.length = 0;
 }
 // Update move counter function
 function updateMoveCounter() {
@@ -70,13 +77,17 @@ cardDeck.addEventListener('click', function(evt) {
   // Add the card to a *list* of "open" cards
   openCard(evt.target);
   // If the list already has another card, check to see if the two cards match
-  // if () {
-    // If the cards do match, lock the cards in the open position
-    cardMatchTrue();
-  // } else {
-    // If the cards do not match, remove the cards from the list and hide the card's symbol
-    cardMatchFalse();
-  // }
+  if (openCardList.length > 1) {
+    if (openCardList[0].innerHTML === openCardList[1].innerHTML) {
+      // If the cards do match, lock the cards in the open position
+      cardMatchTrue(openCardList);
+    } else {
+      // If the cards do not match, remove the cards from the list and hide the card's symbol
+      setTimeout(function() {
+        cardMatchFalse(openCardList);
+      }, 500);
+    }
+  }
   // Increment the move counter and display it on the page
   updateMoveCounter();
   // If all cards have matched, display a message with the final score

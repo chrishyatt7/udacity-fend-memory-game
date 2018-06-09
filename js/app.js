@@ -2,6 +2,7 @@
 let cardList = ['fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor', 'fa-cube', 'fa-cube', 'fa-leaf', 'fa-leaf', 'fa-diamond', 'fa-diamond', 'fa-bomb', 'fa-bomb', 'fa-bolt', 'fa-bolt', 'fa-bicycle', 'fa-bicycle'];
 
 let openCardList = [];
+let moveSpan = document.querySelector('.moves');
 
 // Display the cards on the page
 // Shuffle the list of cards
@@ -63,11 +64,23 @@ function cardMatchFalse(cardList) {
 }
 // Update move counter function
 function updateMoveCounter() {
-
+  moveCounter++;
+  if (moveCounter === 1) {
+    moveSpan.innerHTML = moveCounter + ' Move';
+  } else {
+    moveSpan.innerHTML = moveCounter + ' Moves';
+  }
+}
+// Update score
+function updateScore() {
+  if (moveCounter >= 25 && moveCounter < 35) {
+    document.querySelector('#hard').classList.remove('filled');
+  } else if (moveCounter >= 35) {
+    document.querySelector('#medium').classList.remove('filled');
+  }
 }
 // End game function
 function finalScore() {
-
 }
 
 // Add event listener for each card
@@ -90,6 +103,8 @@ cardDeck.addEventListener('click', function(evt) {
   }
   // Increment the move counter and display it on the page
   updateMoveCounter();
+  // Update score
+  updateScore();
   // If all cards have matched, display a message with the final score
   finalScore();
 });

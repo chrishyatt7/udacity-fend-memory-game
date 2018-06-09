@@ -3,25 +3,32 @@ let cardList = ['fa-paper-plane-o', 'fa-paper-plane-o', 'fa-anchor', 'fa-anchor'
 
 let openCardList = [];
 let moveSpan = document.querySelector('.moves');
+let timerText = document.querySelector('.timer');
+let startRestart = document.querySelector('.restart');
+let startRestartText = document.querySelector('.restartText');
+let moveCounter = 0;
+let seconds = 0;
+let minutes = 0;
 
-// Display the cards on the page
-// Shuffle the list of cards
-cardList = shuffle(cardList);
+// Create and display cards
+function createDeck(cardDeck) {
+  // Create deck fragment
+  const deckFrag = document.createDocumentFragment();
+  // Loop through each card and create its HTML
+  for (card in cardDeck) {
+    const newCard = document.createElement('li');
+    newCard.classList.add('card', card);
+    newCard.innerHTML = '<i class="fa ' + cardDeck[card] + '"></i>';
 
-// Create deck fragment
-const deckFrag = document.createDocumentFragment();
-// Loop through each card and create its HTML
-for (card in cardList) {
-	const newCard = document.createElement('li');
-	newCard.classList.add('card', card);
-	newCard.innerHTML = '<i class="fa ' + cardList[card] + '"></i>';
+    deckFrag.appendChild(newCard);
+  }
+  // Select deck
+  const deck = document.querySelector('.deck');
+  // Add cards to DOM
+  deck.appendChild(deckFrag);
 
-	deckFrag.appendChild(newCard);
+  return deck;
 }
-// Select deck
-const cardDeck = document.querySelector('.deck');
-// Add cards to DOM
-cardDeck.appendChild(deckFrag);
 
 
 // Shuffle function from http://stackoverflow.com/a/2450976
@@ -39,14 +46,19 @@ function shuffle(array) {
     return array;
 }
 
+
 // Display card symbol function --> toggle 'open' class and 'show' class
 function displayCard(card) {
   card.classList.add('open', 'show');
 }
+
+
 // Add card to open card list
 function openCard(card) {
   openCardList.push(card);
 }
+
+
 // Card match function --> toggle 'match,' 'open', 'show' classes
 function cardMatchTrue(cardList) {
   for (card in cardList) {
@@ -55,6 +67,8 @@ function cardMatchTrue(cardList) {
   }
   cardList.length = 0;
 }
+
+
 // Non-match function
 function cardMatchFalse(cardList) {
   for (card in cardList) {
@@ -62,15 +76,18 @@ function cardMatchFalse(cardList) {
   }
   cardList.length = 0;
 }
+
+
 // Update move counter function
 function updateMoveCounter() {
-  moveCounter++;
   if (moveCounter === 1) {
     moveSpan.innerHTML = moveCounter + ' Move';
   } else {
     moveSpan.innerHTML = moveCounter + ' Moves';
   }
 }
+
+
 // Update score
 function updateScore() {
   if (moveCounter >= 25 && moveCounter < 35) {
@@ -79,12 +96,68 @@ function updateScore() {
     document.querySelector('#medium').classList.remove('filled');
   }
 }
+
+
 // End game function
 function finalScore() {
 }
 
+// Timer adapted from https://jsfiddle.net/Daniel_Hug/pvk6p/
+// Timer count function
+function add() {
+  seconds++;
+  if (seconds >= 60) {
+    seconds = 0;
+    minutes++;
+  }
+
+  timerText.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+
+  countTimer();
+}
+
+// Set timer function
+function countTimer() {
+  t = setTimeout(add, 1000);
+}
+
+// Display the cards on the page
+// Shuffle the list of cards
+cardList = shuffle(cardList);
+let deck = createDeck(cardList);
+
+// When user clicks start button, timer starts
+startRestart.addEventListener('click',function() {
+  clearTimeout(t);
+  timerText.textContent = '00:00';
+  minutes = 0;
+  seconds = 0;
+  countTimer();
+
+  // Reset game board and reshuffle
+  openCardList = [];
+  moveCounter = 0;
+  updateMoveCounter();
+  let stars = document.querySelectorAll('.fa-star');
+
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].classList.add('filled');
+  }
+
+  deck.innerHTML = '';
+
+  cardList = shuffle(cardList);
+  deck = createDeck(cardList);
+
+
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+  countTimer();
+})
+
 // Add event listener for each card
-cardDeck.addEventListener('click', function(evt) {
+deck.addEventListener('click', function(evt) {
   // Display the card's symbol
   displayCard(evt.target);
   // Add the card to a *list* of "open" cards
@@ -102,6 +175,7 @@ cardDeck.addEventListener('click', function(evt) {
     }
   }
   // Increment the move counter and display it on the page
+  moveCounter++;
   updateMoveCounter();
   // Update score
   updateScore();

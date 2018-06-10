@@ -18,4 +18,4 @@ For details, check out [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Built With
 
-* [Bootstrap 4] (https://getbootstrap.com/docs/4.1/getting-started/introduction/) - Used for the endgame Modal
+* [Bootstrap 4](https://getbootstrap.com/docs/4.1/getting-started/introduction/) - Used for the endgame Modal

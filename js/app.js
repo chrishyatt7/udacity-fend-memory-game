@@ -9,6 +9,11 @@ let startRestartText = document.querySelector('.restartText');
 let moveCounter = 0;
 let seconds = 0;
 let minutes = 0;
+let cardMatches = 0;
+let finalTime = document.querySelector('.finalTime');
+let finalMoves = document.querySelector('.finalMoves');
+let finalScoreSpan = document.querySelector('.finalScore');
+let playAgain = document.querySelector('.playAgainButton');
 
 // Create and display cards
 function createDeck(cardDeck) {
@@ -100,6 +105,19 @@ function updateScore() {
 
 // End game function
 function finalScore() {
+  if (cardMatches === 8) {
+    $('#congratulations').modal('show');
+    clearTimeout(t);
+    finalTime.textContent = (minutes ? (minutes > 9 ? minutes : "0" + minutes) : "00") + ":" + (seconds > 9 ? seconds : "0" + seconds);
+    finalMoves.textContent = moveCounter;
+    if (moveCounter >= 25 && moveCounter < 35) {
+      finalScoreSpan.textContent = '2 stars!';
+    } else if (moveCounter >= 35) {
+      finalScoreSpan.textContent = '1 star!';
+    } else {
+      finalScoreSpan.textContent = '3 stars!';
+    }
+  }
 }
 
 // Timer adapted from https://jsfiddle.net/Daniel_Hug/pvk6p/
@@ -121,13 +139,8 @@ function countTimer() {
   t = setTimeout(add, 1000);
 }
 
-// Display the cards on the page
-// Shuffle the list of cards
-cardList = shuffle(cardList);
-let deck = createDeck(cardList);
-
-// When user clicks start button, timer starts
-startRestart.addEventListener('click',function() {
+// Restart game function
+function restartGame() {
   clearTimeout(t);
   timerText.textContent = '00:00';
   minutes = 0;
@@ -149,7 +162,23 @@ startRestart.addEventListener('click',function() {
   cardList = shuffle(cardList);
   deck = createDeck(cardList);
 
+  cardMatches = 0;
 
+}
+
+// Display the cards on the page
+// Shuffle the list of cards
+cardList = shuffle(cardList);
+let deck = createDeck(cardList);
+
+// When user clicks start button, timer starts
+startRestart.addEventListener('click', function() {
+  restartGame();
+});
+
+// When user clicks play again, restart game
+playAgain.addEventListener('click', function() {
+  restartGame();
 });
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -163,10 +192,12 @@ deck.addEventListener('click', function(evt) {
   // Add the card to a *list* of "open" cards
   openCard(evt.target);
   // If the list already has another card, check to see if the two cards match
+
   if (openCardList.length > 1) {
     if (openCardList[0].innerHTML === openCardList[1].innerHTML) {
       // If the cards do match, lock the cards in the open position
       cardMatchTrue(openCardList);
+      cardMatches++;
     } else {
       // If the cards do not match, remove the cards from the list and hide the card's symbol
       setTimeout(function() {
